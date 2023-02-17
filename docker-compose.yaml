@@ -5,7 +5,10 @@ services:
     ports:
       - 30000:30000
     command: [ "openao-login" ]
-    depends_on: database, changelog, seed
+    depends_on:
+      - database
+      - changelog
+      - seed
     restart: on-failure
     network_mode: host
   game:
@@ -13,7 +16,10 @@ services:
     ports:
       - 30001:30001
     command: [ "openao-game" ]
-    depends_on: database, changelog, seed
+    depends_on:
+      - database
+      - changelog
+      - seed
     restart: on-failure
     network_mode: host
   changelog:
@@ -26,7 +32,8 @@ services:
       - --search-path=/usr/src/openao/db/changelog
       - update
     restart: on-failure
-    depends_on: database
+    depends_on:
+      - database
     network_mode: host
   seed:
     image: ghcr.io/fygonzalo/openao-migrator:latest
@@ -38,7 +45,9 @@ services:
       - --search-path=/usr/src/openao/db/seed
       - update
     restart: on-failure
-    depends_on: database, changelog
+    depends_on:
+      - database
+      - changelog
     network_mode: host
   database:
     image: postgres
